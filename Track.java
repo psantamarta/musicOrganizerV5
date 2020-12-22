@@ -15,6 +15,8 @@ public class Track
     private String filename;
     //lleva la cuenta de las reproducciones de una canción
     private int playCount;
+    //duracion en minutos
+    private int duration;
     
     /**
      * Constructor for objects of class Track.
@@ -26,6 +28,7 @@ public class Track
     {
         setDetails(artist, title, filename);
         playCount = 0;
+        duration = 0;
     }
     
     /**
@@ -38,6 +41,7 @@ public class Track
     {
         setDetails("unknown", "unknown", filename);
         playCount = 0;
+        duration = 0;
     }
     
     /**
@@ -73,7 +77,7 @@ public class Track
      */
     public String getDetails()
     {
-        return artist + ": " + title + "  (file: " + filename + ")" + " play counts " + playCount;
+        return artist + ": " + title + "  (file: " + filename + ")" + " play counts " + playCount + " duration: " + duration;
     }
     
     /**
@@ -95,6 +99,14 @@ public class Track
     
     public void incrementPlayCount(){
         playCount++;
+    }
+    
+    public int getDuration(){
+        return duration;
+    }
+    
+    public void setDuration(int newDuration){
+        duration = newDuration;
     }
     
 }

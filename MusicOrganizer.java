@@ -181,4 +181,8 @@ public class MusicOrganizer
             }
         }
     }
+    
+    public void setDuration(int index, int newDuration){
+        tracks.get(index).setDuration(newDuration);
+    }
 }
