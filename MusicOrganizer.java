@@ -15,6 +15,9 @@ public class MusicOrganizer
     private MusicPlayer player;
     // A reader that can read music files and load them as tracks.
     private TrackReader reader;
+    //Marca si se esta reproduciendo algo o no
+    private boolean isReproducing;
+   
 
     /**
      * Create a MusicOrganizer
@@ -24,6 +27,7 @@ public class MusicOrganizer
         tracks = new ArrayList<Track>();
         player = new MusicPlayer();
         reader = new TrackReader();
+        isReproducing = false;
         readLibrary("audio");
         System.out.println("Music library loaded. " + getNumberOfTracks() + " tracks.");
         System.out.println();
@@ -53,11 +57,17 @@ public class MusicOrganizer
      */
     public void playTrack(int index)
     {
-        if(indexValid(index)) {
-            Track track = tracks.get(index);
-            player.startPlaying(track.getFilename());
-            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
-            track.incrementPlayCount();
+        if (isReproducing == false){
+            if(indexValid(index)) {
+                Track track = tracks.get(index);
+                player.startPlaying(track.getFilename());
+                System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+                track.incrementPlayCount();
+                isReproducing = true;
+            }
+        }
+        else{
+            System.out.println("Ahora no se puede iniciar. Hay una reproducción en curso");
         }
     }
     
@@ -126,6 +136,7 @@ public class MusicOrganizer
         if(tracks.size() > 0) {
             player.startPlaying(tracks.get(0).getFilename());
             tracks.get(0).incrementPlayCount();
+            isReproducing = true;
         }
     }
     
@@ -135,6 +146,7 @@ public class MusicOrganizer
     public void stopPlaying()
     {
         player.stop();
+        isReproducing = false;
     }
 
     /**
@@ -184,5 +196,14 @@ public class MusicOrganizer
     
     public void setDuration(int index, int newDuration){
         tracks.get(index).setDuration(newDuration);
+    }
+    
+    public void isPlaying(){
+        if (isReproducing == true){
+            System.out.println("Hay una reproducción en curso");
+        }
+        else{
+            System.out.println("No hay ninguna reproducción en curso");
+        }
     }
 }
