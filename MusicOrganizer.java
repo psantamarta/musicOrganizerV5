@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * A class to hold details of audio tracks.
@@ -22,13 +23,13 @@ public class MusicOrganizer
     /**
      * Create a MusicOrganizer
      */
-    public MusicOrganizer()
+    public MusicOrganizer(String folder)
     {
         tracks = new ArrayList<Track>();
         player = new MusicPlayer();
         reader = new TrackReader();
         isReproducing = false;
-        readLibrary("audio");
+        readLibrary(folder);
         System.out.println("Music library loaded. " + getNumberOfTracks() + " tracks.");
         System.out.println();
     }
@@ -206,15 +207,15 @@ public class MusicOrganizer
             System.out.println("No hay ninguna reproducción en curso");
         }
     }
-    
+
     public void listAllTrackWithIterator(){
         Iterator<Track> it = tracks.iterator();
-	while (it.hasNext()){
-		Track currentTrack = it.next();
-		System.out.println(currentTrack.getDetails());
-	}
+        while (it.hasNext()){
+            Track currentTrack = it.next();
+            System.out.println(currentTrack.getDetails());
+        }
     }
-    
+
     public void removeByArtist(String artistRemove){
         Iterator<Track> it = tracks.iterator();
         while (it.hasNext()) {
@@ -225,7 +226,7 @@ public class MusicOrganizer
             }
         }
     }
-    
+
     public void removeByTitle(String partOfTitle){
         Iterator<Track> it = tracks.iterator();
         while (it.hasNext()) {
@@ -236,4 +237,36 @@ public class MusicOrganizer
             }
         }
     }
+
+    public void playRandom(){
+        if (isReproducing == false){
+            Random random = new Random();
+            int randomIndex = random.nextInt(tracks.size());
+            Track track = tracks.get(randomIndex);
+            player.startPlaying(track.getFilename());
+            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+            track.incrementPlayCount();
+            isReproducing = true;
+        }
+
+        else{
+            System.out.println("Ahora no se puede iniciar. Hay una reproducción en curso");
+        }
+    }
+
+    public void playShuffle(){
+        ArrayList<Track> copia = new ArrayList(); 
+        copia = (ArrayList)tracks.clone();
+        while(copia.size() > 0){
+            Random random = new Random();
+            int randomIndex = random.nextInt(copia.size());
+            Track track = copia.get(randomIndex);
+            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+            player.playSample(track.getFilename());
+            track.incrementPlayCount();
+            copia.remove(randomIndex);
+        }
+
+    }
+
 }
